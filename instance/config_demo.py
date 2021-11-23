@@ -1,0 +1,18 @@
+DEBUG_SKIP_CHECK_TIMESTAMP = True
+# DEBUG_SKIP_CALLBACK_BASICAUTH = True
+
+RECORDSTORE = 'file'  # 'firestore' or 'file'
+RECORDSTORE_DIRPREFIX = '/tmp/link-daemon-temp'
+
+FIRESTORE_PROJECT = 'your-gcp-project...'
+
+NDSS_SERVICE_ID = 'future-telecom'
+NDSS_SERVER = 'https://ndss'
+NDSS_CRT = '4096-KNT-root-ca'
+NDSS_TIMEOUT = 20
+
+NDSS_CALLBACK_BASIC_LOGIN = '...'
+NDSS_CALLBACK_BASIC_PASSWORD = '...'
+
+NDSS_AUTH_BASIC_LOGIN = '...'
+NDSS_AUTH_BASIC_PASSWORD = '...'
