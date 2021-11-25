@@ -1,27 +1,8 @@
-# Keenetic Link Daemon
+# Keenetic Cloud Link Service
 
 ## Setup Instructions
 
-Download actual NDSS SSL certificate from [http://pki.ndm9.xyz/4096-NDM-root-ca.crt]
-
-Flask is starting by default on 127.0.0.1, have to change to 0.0.0.0 in app.run()
-Request to ndmp/linkDaemon w/o params throws 500 error, instead of 400
-Hardcoded path - /tmp/link-daemon-demo
-Remove trailing slash in NDSS_SERVER URL
-
-## NDSS config
-
-### data/settings/ndss/ndmp-services.json
-
-Add service_id params
-
-### data/settings/ndss/ndmp-domains.json
-
-Add linkdaemon endpoint URL
-
-### data/settings/ndss/ndrs-cookies.json
-
-Add ndmpOwnerId cookie for licenses
+To be done
 
 >ndmp component is required on CPE
 
@@ -41,7 +22,7 @@ Add ndmpOwnerId cookie for licenses
 - **0x401** -- API Authorization failed
 - **0x414** -- Signature verification failed. See Error Details for more information
 
-## Proxied errors from CPE device
+## Proxied errors from device
 
 - **0x0300** -- No acknowledge after info request. (30 sec)
 - **0x0400** -- Unable to get from or to send information to device. Is device off?
