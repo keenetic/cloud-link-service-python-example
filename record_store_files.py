@@ -5,7 +5,7 @@ Sample RecordStore: saving device records to files
 
 import json
 import os
-from typing import Optional, Union
+from typing import *
 from record_store import RecordStore
 
 
@@ -70,7 +70,7 @@ class RecordStoreFiles(RecordStore):
         return str(content)
 
     @staticmethod
-    def _get_json_from_filename(filename: str) -> Optional[dict]:
+    def _get_json_from_filename(filename: str) -> Optional[Dict]:
         if os.path.isfile(filename):
             with open(filename, 'r') as f:
                 return json.load(f)
@@ -79,7 +79,7 @@ class RecordStoreFiles(RecordStore):
     def save_pending_ec_record(
             self,
             token_alias: str,
-            content: Union[str, dict]
+            content: Union[str, Dict]
     ) -> None:
         with open(self._get_filename_records(token_alias, 'pending'), 'w') as f:
             f.write(RecordStoreFiles._ensure_string_before_save(content))
@@ -87,7 +87,7 @@ class RecordStoreFiles(RecordStore):
     def save_active_ec_record(
             self,
             token_alias: str,
-            content: Union[str, dict]
+            content: Union[str, Dict]
     ) -> None:
         with open(self._get_filename_records(token_alias, 'active'), 'w') as f:
             f.write(RecordStoreFiles._ensure_string_before_save(content))
@@ -96,7 +96,7 @@ class RecordStoreFiles(RecordStore):
     def load_ec_record(
             self,
             token_alias: str
-    ) -> Optional[dict]:
+    ) -> Optional[Dict]:
         filename = self._get_filename_records(token_alias, 'active')
         return self._get_json_from_filename(filename)
 
@@ -105,13 +105,13 @@ class RecordStoreFiles(RecordStore):
             token_alias: str,
             access_role: str,
             user_data: str
-    ) -> Optional[dict]:
+    ) -> Optional[Dict]:
         filename = self._get_filename_bearers(token_alias, access_role, user_data)
         return self._get_json_from_filename(filename)
 
     def save_bearer_record(
             self,
-            content: dict[str]
+            content: Dict[str, str]
     ) -> None:
         if isinstance(content, dict):
             token_alias, access_role, user_data = [content.get(x) for x in ['tokenAlias', 'accessRole', 'userData']]

@@ -2,7 +2,7 @@
 Sample RecordStore: saving device records to Google Cloud Firestore
 """
 
-from typing import Optional, Union
+from typing import *
 from record_store import RecordStore
 from google.cloud import firestore
 
@@ -39,7 +39,7 @@ class RecordFirestore(RecordStore):
         return True
 
     @staticmethod
-    def _ensure_dict_before_save(content) -> dict[str]:
+    def _ensure_dict_before_save(content) -> Dict[str, object]:
         if not isinstance(content, dict):
             return {'content': content}
         return content
@@ -47,9 +47,9 @@ class RecordFirestore(RecordStore):
     def save_pending_ec_record(
             self,
             token_alias: str,
-            content: Union[str, dict]
+            content: Union[str, Dict]
     ) -> None:
-        content_dict: dict = RecordFirestore._ensure_dict_before_save(content)
+        content_dict = RecordFirestore._ensure_dict_before_save(content)
         content_dict['isActive'] = False
         doc_ref = self._firestore_collection_records.document(token_alias)
         doc_ref.set(content_dict)
@@ -57,9 +57,9 @@ class RecordFirestore(RecordStore):
     def save_active_ec_record(
             self,
             token_alias: str,
-            content: Union[str, dict]
+            content: Union[str, Dict]
     ) -> None:
-        content_dict: dict = RecordFirestore._ensure_dict_before_save(content)
+        content_dict = RecordFirestore._ensure_dict_before_save(content)
         content_dict['isActive'] = True
         doc_ref = self._firestore_collection_records.document(token_alias)
         doc_ref.set(RecordFirestore._ensure_dict_before_save(content))
@@ -67,7 +67,7 @@ class RecordFirestore(RecordStore):
     def load_ec_record(
             self,
             token_alias: str
-    ) -> Optional[dict]:
+    ) -> Optional[Dict]:
         doc_ref = self._firestore_collection_records.document(token_alias)
         doc = doc_ref.get()
         if doc.exists:
@@ -82,9 +82,9 @@ class RecordFirestore(RecordStore):
 
     def save_bearer_record(
             self,
-            content: dict[str]
+            content: Dict[str, str]
     ) -> None:
-        content_dict: dict = RecordFirestore._ensure_dict_before_save(content)
+        content_dict = RecordFirestore._ensure_dict_before_save(content)
         token_alias, access_role, user_data = [content_dict.get(x) for x in ['tokenAlias', 'accessRole', 'userData']]
         document_key = RecordFirestore._get_bearer_key(token_alias, access_role, user_data)
         doc_ref = self._firestore_collection_bearers.document(document_key)
@@ -95,7 +95,7 @@ class RecordFirestore(RecordStore):
             token_alias: str,
             access_role: str,
             user_data: str
-    ) -> Optional[dict]:
+    ) -> Optional[Dict]:
         document_key = RecordFirestore._get_bearer_key(token_alias, access_role, user_data)
         doc_ref = self._firestore_collection_bearers.document(document_key)
         doc = doc_ref.get()
