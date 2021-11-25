@@ -1,6 +1,6 @@
 import json
 from threading import Thread
-from typing import Optional
+from typing import *
 from flask import Flask, request, jsonify, Response
 from functools import wraps
 
@@ -26,7 +26,7 @@ with open('instance/config.json') as f:
 ndss_service_id = config.get('NDSS_SERVICE_ID')
 
 
-def get_params_from_config_by_prefix(prefix: str) -> dict[str]:
+def get_params_from_config_by_prefix(prefix: str) -> Dict[str, str]:
     """
     Returns parameters from config with names, starting with prefix
 
@@ -67,7 +67,7 @@ def log_request_debug() -> None:
         log("DATA=" + str(request.data))
 
 
-def extract_parameters_from(req: 'request') -> dict[str, str]:
+def extract_parameters_from(req: 'request') -> Dict[str, str]:
     """
     Extracts GET-parameters from Flask request
 
@@ -77,7 +77,7 @@ def extract_parameters_from(req: 'request') -> dict[str, str]:
     return dict(req.args.items())
 
 
-def contains_all_mandatory(params: dict[str], mandatory: list[str]) -> bool:
+def contains_all_mandatory(params: Dict[str, object], mandatory: List[str]) -> bool:
     """
     Checks, if given params dict contains all items from mandatory list
 
