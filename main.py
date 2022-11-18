@@ -1,6 +1,5 @@
 import json
 from threading import Thread
-from typing import *
 from flask import Flask, request, jsonify, Response
 from functools import wraps
 
@@ -36,6 +35,13 @@ def get_params_from_config_by_prefix(prefix: str) -> Dict[str, str]:
     return {str(k): str(v) for k, v in config.items() if str(k).startswith(prefix)}
 
 
+def log(message: str) -> None:
+    """
+    Logs message
+    """
+    print(message)
+
+
 ndss_client = NDSS(get_params_from_config_by_prefix('NDSS_'))
 recordstore_type = config.get('RECORDSTORE')
 
@@ -49,12 +55,14 @@ if recordstore_type == 'firestore':
     firestore_project = config.get('FIRESTORE_PROJECT')
     rs = RecordFirestore(ndss_service_id, firestore_project)
 
-
-def log(message: str) -> None:
-    """
-    Logs message
-    """
-    print(message)
+is_rs_setup = False
+if rs:
+    is_rs_setup = rs.ensure_infra()
+if is_rs_setup:
+    log(f'Starting web app with service_id={rs.service_id} using {rs.name()} storage')
+else:
+    log("Failed to setup environment")
+    exit()
 
 
 def log_request_debug() -> None:
@@ -337,20 +345,16 @@ def hello():
 
 
 @app.errorhandler(404)
-def not_found():
+def not_found(e):
     log_request_debug()
     return '<h1>Not found</h1>', 404
 
 
 @app.errorhandler(500)
-def server_error():
+def server_error(e):
     log_request_debug()
     return '<h1>An internal error occurred</h1>', 500
 
 
 if __name__ == '__main__':
-    if rs and rs.ensure_infra():
-        log(f'Starting web app with service_id={rs.service_id} using {rs.name()} storage')
-        app.run()
-    else:
-        log('Failed to setup environment')
+    app.run()
