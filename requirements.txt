@@ -2,4 +2,4 @@ Flask
 gunicorn
 google-cloud
 google-cloud-firestore
-git+git://github.com/keenetic/cloud-api-python-client@master#egg=ndcloudclient
+git+https://github.com/keenetic/cloud-api-python-client@master#egg=ndcloudclient
