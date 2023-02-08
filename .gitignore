@@ -4,3 +4,5 @@ app.yaml
 __pycache__
 .vscode
 .idea
+data
+*.log
