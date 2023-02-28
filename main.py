@@ -293,10 +293,13 @@ def search_and_connect():
             return format_error('0x100', 'failed to get information from NDSS, try later')
         except KeeneticDeviceException as kde:
             return format_error(kde.code, kde.description)
+
         if info_from_device is None:
             # actually, this is not an error, but special case
             return format_error('0x101', 'unexpected answer from NDSS')
-        if info_from_device.get('bearer_is_valid') == 'true':
+
+        rrst_version = int(info_from_device.get('rrst_version'))
+        if rrst_version >= 2 and info_from_device.get('bearer_is_valid') == 'true':
             return format_result(
                 hw_id, token_alias, system_name, info_from_device.get('model_name'), bearer_value
             )
