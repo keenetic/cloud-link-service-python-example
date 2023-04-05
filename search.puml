@@ -1,0 +1,32 @@
+@startuml Search Method
+title Search Method
+start
+
+if (licence format is NOT valid?) then
+	stop
+endif
+
+:ndmp/resolveLicense;
+
+if (licence is NOT valid?) then
+	stop
+endif
+
+:search bearer in persistent storage by tokenAlias,accessRole,userData;
+
+if (bearer found and is not expred) then
+	:get device RRST version check bearer with ndns/remoteInfo;
+	if (RRST < 2) then (yes)
+		:send bearer to device with ndmp/trustBearer;
+	endif
+else
+	:generate new bearer;
+	:send bearer to device with ndmp/trustBearer;
+	:get device fw version and check bearer with ndns/remoteInfo;
+	:save bearer to persistent storage;
+endif
+
+:success;
+
+stop
+@enduml
